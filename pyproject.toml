@@ -6,6 +6,7 @@ authors = ["Réda Maizate <reda.maizate@affluences.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+Kivy = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
 
