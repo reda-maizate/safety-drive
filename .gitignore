@@ -4,6 +4,9 @@ __pycache__/
 *$py.class
 .idea/
 
+# Secret files
+rootkey.csv
+
 # C extensions
 *.so
 
