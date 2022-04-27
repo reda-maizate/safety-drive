@@ -13,7 +13,7 @@ provider "aws" {
 }
 
 resource "aws_kinesis_video_stream" "kinesis_video_stream" {
-  name                    = "reda-test-kinesis-video-stream"
+  name                    = "reda-test-video-stream"
   data_retention_in_hours = 1
   media_type              = "video/h264"
 }
