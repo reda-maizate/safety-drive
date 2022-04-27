@@ -1,7 +1,4 @@
-import json
 import os
-import uuid
-
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
@@ -36,42 +33,28 @@ AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 
 
-class KinesisStream(object):
+class KinesisVideoStream(object):
     def __init__(self, stream):
         self.stream = stream
 
     def _connected_client(self):
-        """Connect to Kinesis Streams"""
+        """
+        Connect to Kinesis Video Streams
+        """
         return boto3.client(
-            "kinesis",
+            "kinesisvideo",
             region_name="us-east-1",
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
         )
 
-    def send_stream(self, data, partition_key=None):
+    def get_data_endpoint(self):
         """
-        data: python dict containing your data.
-        partition_key:  set it to some fixed value if you want processing order
-                        to be preserved when writing successive records.
-
-                        If your kinesis stream has multiple shards, AWS hashes your
-                        partition key to decide which shard to send this record to.
-
-                        Ignore if you don't care for processing order
-                        or if this stream only has 1 shard.
-
-                        If your kinesis stream is small, it probably only has 1 shard anyway.
+        Get Data endpoint to send stream video
         """
-
-        # If no partition key is given, assume random sharding for even shard write load
-        if partition_key is None:
-            partition_key = str(uuid.uuid4())
-
         client = self._connected_client()
-        return client.put_record(
-            StreamName=self.stream, Data=json.dumps(data), PartitionKey=partition_key
-        )
+        result = client.get_data_endpoint(StreamName=self.stream, APIName="PUT_MEDIA")
+        return result.get("DataEndpoint")
 
 
 class Main(BoxLayout):
@@ -87,11 +70,10 @@ class Main(BoxLayout):
         """
         Function to send data to Kinesis
         """
-        data = {"name": "John", "age": 30}
-        stream = KinesisStream("reda-test-kinesis")
-        while True:
-            stream.send_stream(data=data)
-            print("Data sent to Kinesis")
+        stream = KinesisVideoStream("reda-test-video-stream")
+        # while True:
+        data_endpoint = stream.get_data_endpoint()
+        print("Data sent to Kinesis")
 
 
 class TestCamera(App):
