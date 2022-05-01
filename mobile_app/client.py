@@ -1,13 +1,6 @@
-import hashlib
-import hmac
-import os
-import time
-from datetime import datetime
-
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
-import boto3
 
 from mobile_app.kinesis import KinesisVideoStream
 

@@ -141,35 +141,28 @@ class KinesisVideoStream(object):
             canonical_request = (
                 "POST"
                 + "\n"
-                + "/putMedia"
-                + "\n"
-                + "\n"
-                + "connection:keep-alive"
-                + "\n"
-                + "content-type:application/json"
-                + "\n"
+                + "/putMedia\n\n"
+                + "connection:keep-alive\n"
+                + "content-type:application/json\n"
                 + "host:"
                 + self.host
                 + "\n"
-                + "transfer-encoding:chunked"
-                + "\n"
-                + "user-agent:AWS-SDK-KVS/2.0.2 GCC/7.4.0 Linux/4.15.0-46-generic x86_64"
-                + "\n"
+                + "transfer-encoding:chunked\n"
+                + "user-agent:AWS-SDK-KVS/2.0.2 GCC/7.4.0 Linux/4.15.0-46-generic x86_64\n"
                 + "x-amz-date:"
                 + self.amz_date
                 + "\n"
-                + "amz-fragment-acknowledgment-required:1"
-                + "\n"
-                + "x-amzn-fragment-timecode-type:ABSOLUTE"
-                + "\n"
+                + "amz-fragment-acknowledgment-required:1\n"
+                + "x-amzn-fragment-timecode-type:ABSOLUTE\n"
                 + "x-amzn-producer-start-timestamp:"
                 + repr(time.time())
                 + "\n"
                 + "x-amzn-stream-name:"
                 + STREAM_NAME
-                + "\n"
-                + "\n"
+                + "\n\n"
                 + self.signed_headers
+                + "\n"
+                + hashlib.sha256("".encode("utf-8")).hexdigest()
             )
 
             string_to_sign = (
@@ -220,6 +213,7 @@ class KinesisVideoStream(object):
                 "Accept": "*/*",
                 "Authorization": authorization_header,
                 "connection": "keep-alive",
+                "content-type": "application/json",
                 "transfer-encoding": "chunked",
                 "user-agent": "AWS-SDK-KVS/2.0.2 GCC/7.4.0 Linux/4.15.0-46-generic x86_64",
                 "x-amz-date": datetime.utcnow().strftime("%Y%m%dT%H%M%SZ"),
@@ -227,7 +221,6 @@ class KinesisVideoStream(object):
                 "x-amzn-fragment-timecode-type": "ABSOLUTE",
                 "x-amzn-producer-start-timestamp": repr(time.time()),
                 "x-amzn-stream-name": STREAM_NAME,
-                "content-type": "application/octet-stream",
                 "Expect": "100-continue",
             }
             return request_parameters
@@ -236,12 +229,12 @@ class KinesisVideoStream(object):
         """
         Send data to Kinesis
         """
-        endpoint = self.get_endpoint() + "/putMedia"
+        endpoint = self.get_endpoint()
         headers = self.RequestHeaders(
             endpoint, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
         )
         request = requests.post(
-            endpoint,
+            endpoint + "/putMedia",
             data=self.VideoStreamData(),
             headers=headers.get_request_parameters(),
         )
