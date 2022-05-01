@@ -1,8 +1,15 @@
+import hashlib
+import hmac
 import os
+import time
+from datetime import datetime
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 import boto3
+
+from mobile_app.kinesis import KinesisVideoStream
 
 Builder.load_string(
     """
@@ -29,33 +36,6 @@ Builder.load_string(
     """
 )
 
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-
-
-class KinesisVideoStream(object):
-    def __init__(self, stream):
-        self.stream = stream
-
-    def _connected_client(self):
-        """
-        Connect to Kinesis Video Streams
-        """
-        return boto3.client(
-            "kinesisvideo",
-            region_name="us-east-1",
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        )
-
-    def get_data_endpoint(self):
-        """
-        Get Data endpoint to send stream video
-        """
-        client = self._connected_client()
-        result = client.get_data_endpoint(StreamName=self.stream, APIName="PUT_MEDIA")
-        return result.get("DataEndpoint")
-
 
 class Main(BoxLayout):
     def play(self):
@@ -66,14 +46,14 @@ class Main(BoxLayout):
         camera.play = not camera.play
         print("Started")
 
-    def send_data_to_kinesis(self):
+    @staticmethod
+    def send_data_to_kinesis():
         """
         Function to send data to Kinesis
         """
-        stream = KinesisVideoStream("reda-test-video-stream")
-        # while True:
-        data_endpoint = stream.get_data_endpoint()
-        print("Data sent to Kinesis")
+        kinesis_stream = KinesisVideoStream()
+        status_code = kinesis_stream.send_data()
+        print("Data sent to Kinesis with status code {}".format(status_code))
 
 
 class TestCamera(App):
