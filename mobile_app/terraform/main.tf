@@ -9,7 +9,7 @@ terraform {
 
 provider "aws" {
   region = "us-east-1"
-  profile = "redaprofile"
+  profile = "cedric"
 }
 
 resource "aws_kinesis_video_stream" "kinesis_video_stream" {
