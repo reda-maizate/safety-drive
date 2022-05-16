@@ -36,7 +36,6 @@ class KinesisVideoStream(object):
             StreamName=STREAM_NAME, APIName="PUT_MEDIA"
         )
         data_endpoint = result.get("DataEndpoint")
-        assert data_endpoint is not None
         return data_endpoint
 
     class VideoStreamData:
@@ -175,9 +174,7 @@ class KinesisVideoStream(object):
                 + self.region
                 + "/"
                 + self.service
-                + "/"
-                + "aws4_request"
-                + "\n"
+                + "/aws4_request\n"
                 + hashlib.sha256(canonical_request.encode("utf-8")).hexdigest()
             )
 
@@ -223,6 +220,7 @@ class KinesisVideoStream(object):
                 "x-amzn-stream-name": STREAM_NAME,
                 "Expect": "100-continue",
             }
+            print(request_parameters)
             return request_parameters
 
     def send_data(self):

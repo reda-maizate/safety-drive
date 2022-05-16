@@ -4,9 +4,7 @@ import os
 import sys
 import datetime
 import time
-from PIL import Image
 import boto3
-import cv2
 
 import requests
 import pprint as pp
@@ -86,7 +84,7 @@ class gen_request_parameters:
         pointer_start = self._pointer
         self._pointer += chunksz
         print("Data: chunk size %d" % chunksz)
-        return self._data[pointer_start: self._pointer]
+        return self._data[pointer_start : self._pointer]
 
     def next(self):
         return self.__next__()
@@ -250,6 +248,9 @@ headers = {
 # ************* SEND THE REQUEST *************
 print("\nBEGIN REQUEST++++++++++++++++++++++++++++++++++++")
 print("Request URL = " + endpoint)
+print("Headers:", headers)
+print("Endpoint:", endpoint)
+print("gen_request_parameters:", gen_request_parameters())
 
 r = requests.post(endpoint, data=gen_request_parameters(), headers=headers)
 

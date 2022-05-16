@@ -4,30 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 
 from mobile_app.kinesis import KinesisVideoStream
 
-Builder.load_string(
-    """
-<Main>:
-    orientation: 'vertical'
-    Label:
-        text: 'Client'
-        font_size: '30sp'
-        size_hint_y: '0.1'
-    Camera:
-        id: camera
-        resolution: (1920, 1080)
-        play: False
-    ToggleButton:
-        text: 'Start camera'
-        on_press: root.play()
-        size_hint_y: None
-        height: '48dp'
-    ToggleButton:
-        text: 'Connect to AWS'
-        on_press: root.send_data_to_kinesis()
-        size_hint_y: None
-        height: '48dp'
-    """
-)
+Builder.load_file("index.kv")
 
 
 class Main(BoxLayout):
