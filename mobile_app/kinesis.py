@@ -35,7 +35,9 @@ class KinesisVideoStream(object):
         result = self._client.get_data_endpoint(
             StreamName=STREAM_NAME, APIName="PUT_MEDIA"
         )
-        data_endpoint = result.get("DataEndpoint")
+        data_endpoint = result.get("DataEndpoint", None)
+        if data_endpoint is None:
+            raise Exception("endpoint none")
         return data_endpoint
 
     class VideoStreamData:
@@ -65,13 +67,14 @@ class KinesisVideoStream(object):
     class RequestHeaders:
         def __init__(self, endpoint, access_key, secret_key):
             self.endpoint = endpoint
+            self.service = "kinesisvideo"
+            self.host = self.get_host_from_endpoint(endpoint)
+            self.region = self.get_region_from_endpoint(endpoint)
             self.access_key = access_key
             self.secret_key = secret_key
-            self.region = self.get_region_from_endpoint(endpoint)
-            self.host = self.get_host_from_endpoint(endpoint)
-            self.service = "kinesisvideo"
-            self.date_stamp = datetime.utcnow().strftime("%Y%m%d")
-            self.amz_date = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+            self.t = datetime.utcnow()
+            self.date_stamp = self.t.strftime("%Y%m%d")
+            self.amz_date = self.t.strftime("%Y%m%dT%H%M%SZ")
             self.algorithm = "AWS4-HMAC-SHA256"
             self.credential = (
                 self.access_key
@@ -86,8 +89,8 @@ class KinesisVideoStream(object):
             )
             self.signed_headers = (
                 "connection;content-type;host;transfer-encoding;user-agent;x-amz-date;x-amzn"
-                "-fragment-acknowledgment-required;x-amzn-fragment-timecode-type;x-amzn-producer"
-                "-start-timestamp;x-amzn-stream-name"
+                + "-fragment-acknowledgment-required;x-amzn-fragment-timecode-type;x-amzn-producer"
+                + "-start-timestamp;x-amzn-stream-name"
             )
 
         @staticmethod
@@ -151,7 +154,7 @@ class KinesisVideoStream(object):
                 + "x-amz-date:"
                 + self.amz_date
                 + "\n"
-                + "amz-fragment-acknowledgment-required:1\n"
+                + "x-amzn-fragment-acknowledgment-required:1\n"
                 + "x-amzn-fragment-timecode-type:ABSOLUTE\n"
                 + "x-amzn-producer-start-timestamp:"
                 + repr(time.time())
@@ -213,7 +216,7 @@ class KinesisVideoStream(object):
                 "content-type": "application/json",
                 "transfer-encoding": "chunked",
                 "user-agent": "AWS-SDK-KVS/2.0.2 GCC/7.4.0 Linux/4.15.0-46-generic x86_64",
-                "x-amz-date": datetime.utcnow().strftime("%Y%m%dT%H%M%SZ"),
+                "x-amz-date": self.t.strftime("%Y%m%dT%H%M%SZ"),
                 "x-amzn-fragment-acknowledgment-required": "1",
                 "x-amzn-fragment-timecode-type": "ABSOLUTE",
                 "x-amzn-producer-start-timestamp": repr(time.time()),
