@@ -135,3 +135,13 @@ dmypy.json
 # Terraform
 *.terraform*
 terraform.*
+
+# MacOS
+.DS_Store
+
+# Videos
+*.mp4
+*.avi
+*.mkv
+*.webm
+*.mov

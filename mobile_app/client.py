@@ -1,8 +1,12 @@
+from time import sleep
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 
 from mobile_app.kinesis import KinesisVideoStream
+from mobile_app.services.s3 import S3
+from mobile_app.services.video_camera import get_video_capture
 
 Builder.load_file("index.kv")
 
@@ -16,14 +20,15 @@ class Main(BoxLayout):
         camera.play = not camera.play
         print("Started")
 
-    @staticmethod
-    def send_data_to_kinesis():
+    def send_data_to_s3(self):
         """
-        Function to send data to Kinesis
+        Function to send data to S3
         """
-        kinesis_stream = KinesisVideoStream()
-        status_code = kinesis_stream.send_data()
-        print("Data sent to Kinesis with status code {}".format(status_code))
+        i = 0
+        while i < 3:
+            get_video_capture(i)
+            i += 1
+        # print("Data sent to S3")
 
 
 class TestCamera(App):
