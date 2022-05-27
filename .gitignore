@@ -106,7 +106,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+infrastructure/.env
 .venv
 env/
 venv/
@@ -145,3 +145,6 @@ terraform.*
 *.mkv
 *.webm
 *.mov
+
+# Compressed files
+*.zip
