@@ -135,6 +135,7 @@ dmypy.json
 # Terraform
 *.terraform*
 terraform.tfs*
+*.bak
 
 # MacOS
 .DS_Store
