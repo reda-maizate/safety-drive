@@ -4,7 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 
 from mobile_app.services.video_camera import capture_webcam_video
 
-Builder.load_file("index.kv")
+Builder.load_file("templates/index.kv")
 
 
 class Main(BoxLayout):
@@ -19,10 +19,9 @@ class Main(BoxLayout):
     @staticmethod
     def send_data_to_s3():
         """
-        Function to send data to S3
+        Function to send data to S3.
         """
         capture_webcam_video("camera_video")
-        print("Data sent to S3")
 
 
 class TestCamera(App):
