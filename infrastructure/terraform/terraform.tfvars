@@ -1,0 +1,6 @@
+function_name          = "Process"
+handler_name           = "lambda_function"
+runtime                = "python3.8"
+lambda_role_name       = "safety_drive_lambda_iam_role"
+lambda_iam_policy_name = "safety_drive_lambda_iam_policy"
+bucket_name            = "safety-drive-bucket"

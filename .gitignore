@@ -106,7 +106,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+infrastructure/.env
 .venv
 env/
 venv/
@@ -134,4 +134,17 @@ dmypy.json
 
 # Terraform
 *.terraform*
-terraform.*
+terraform.tfs*
+
+# MacOS
+.DS_Store
+
+# Videos
+*.mp4
+*.avi
+*.mkv
+*.webm
+*.mov
+
+# Compressed files
+*.zip
