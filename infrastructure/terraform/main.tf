@@ -63,8 +63,8 @@ resource "aws_lambda_function" "test_lambda" {
   role             = aws_iam_role.lambda_iam.arn
   handler          = "src/${var.handler_name}.lambda_handler"
   runtime          = var.runtime
-  filename         = "src.zip"
-  source_code_hash = filebase64sha256("src.zip")
+  filename         = "../src.zip"
+  source_code_hash = filebase64sha256("../src.zip")
 }
 
 resource "aws_iam_policy" "function_logging_policy" {

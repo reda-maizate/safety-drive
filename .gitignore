@@ -134,7 +134,7 @@ dmypy.json
 
 # Terraform
 *.terraform*
-terraform.*
+terraform.tfs*
 
 # MacOS
 .DS_Store
