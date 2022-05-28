@@ -1,7 +1,5 @@
 import os
-
 import cv2
-
 from mobile_app.services.s3 import S3
 
 NUM_FRAMES_WANTED = 25
@@ -16,12 +14,9 @@ def capture_webcam_video(temp_file_name: str) -> None:
     frame_width = int(video.get(3))
     frame_height = int(video.get(4))
     size = (frame_width, frame_height)
-    codec = cv2.VideoWriter_fourcc(*'XVID')
+    codec = cv2.VideoWriter_fourcc(*"XVID")
 
-    result = cv2.VideoWriter(f'{temp_file_name}.avi',
-                             codec,
-                             40,
-                             size)
+    result = cv2.VideoWriter(f"{temp_file_name}.avi", codec, 40, size)
 
     save_video(video, result, NUM_FRAMES_WANTED)
     send_to_s3(temp_file_name, "camera_video")
@@ -34,7 +29,9 @@ def send_to_s3(temp_file_name: str, key_name: str) -> None:
     print("The video was sent to S3")
 
 
-def save_video(video: cv2.VideoCapture, video_writer: cv2.VideoWriter, num_of_frames_wanted: int):
+def save_video(
+    video: cv2.VideoCapture, video_writer: cv2.VideoWriter, num_of_frames_wanted: int
+):
     # Option n°1 : Save a video and send it to S3
     for idx in range(1, num_of_frames_wanted + 1):
         ret, frame = video.read()

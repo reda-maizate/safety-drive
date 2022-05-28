@@ -29,4 +29,3 @@ class S3:
         Upload file to S3
         """
         self._client.upload_file(file_path, S3_BUCKET_NAME, key)
-
