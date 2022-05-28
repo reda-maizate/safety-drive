@@ -7,7 +7,7 @@ from mobile_app.services.video_camera import capture_webcam_video
 Builder.load_file("templates/index.kv")
 
 
-class Main(BoxLayout):
+class SafetyDriveApp(BoxLayout):
     def play(self):
         """
         Function to start/stop the camera
@@ -17,16 +17,16 @@ class Main(BoxLayout):
         print("Started")
 
     @staticmethod
-    def send_data_to_s3():
+    def send_video_to_s3():
         """
         Function to send data to S3.
         """
         capture_webcam_video("camera_video")
 
 
-class TestCamera(App):
+class Main(App):
     def build(self):
-        return Main()
+        return SafetyDriveApp()
 
 
-TestCamera().run()
+Main().run()

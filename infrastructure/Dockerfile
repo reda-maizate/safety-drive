@@ -1,7 +1,9 @@
 FROM ubuntu:latest
 
 # Update and upgrade
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update -y && apt-get upgrade -y
+RUN apt install wget -y && apt install curl -y
+RUN apt install zip -y
 
 # Uninstall Python 3.10
 RUN apt autoremove python3 -y
@@ -17,13 +19,12 @@ RUN apt install python3.8 -y
 RUN apt install python3.8-distutils -y
 
 # Install pip for Python 3.8
-RUN apt install wget && apt install curl -y
-RUN apt install zip -y
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3.8 get-pip.py
 
 # Launch the install script
 COPY utils/install.sh /install.sh
+COPY src/ /src/
 RUN chmod u+x /install.sh
 
 CMD /install.sh $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_DEFAULT_REGION $AWS_BUCKET
