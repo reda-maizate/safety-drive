@@ -1,20 +1,14 @@
-#Create Variables
+# Create variables
+
+variable "aws_account_id" {
+  default = ""
+}
+
+variable "region" {
+  default = ""
+}
+
 variable "function_name" {
-  default = ""
-}
-
-variable "handler_name" {
-  default = ""
-}
-
-variable "runtime" {
-  default = ""
-}
-
-variable "sender_email" {
-  default = ""
-}
-variable "receiver_email" {
   default = ""
 }
 
@@ -27,5 +21,9 @@ variable "lambda_iam_policy_name" {
 }
 
 variable "bucket_name" {
+  default = ""
+}
+
+variable "ecr_repository_name" {
   default = ""
 }

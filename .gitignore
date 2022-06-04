@@ -106,7 +106,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-infrastructure/.env
+.env
 .venv
 env/
 venv/
@@ -133,6 +133,7 @@ dmypy.json
 .pyre/
 
 # Terraform
+terraform.tfvars
 *.terraform*
 terraform.tfs*
 *.bak

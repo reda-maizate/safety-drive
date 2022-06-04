@@ -8,12 +8,14 @@ resource "aws_iam_role" "lambda_iam" {
 
 # Create the Lambda function
 resource "aws_lambda_function" "process_lambda" {
+  depends_on       = [
+                      null_resource.ecr_image
+                     ]
   function_name    = var.function_name
   role             = aws_iam_role.lambda_iam.arn
-  handler          = "src/${var.handler_name}.lambda_handler"
-  runtime          = var.runtime
-  filename         = "../src.zip"
-  source_code_hash = filebase64sha256("../src.zip")
+  image_uri        = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image.id}"
+  package_type     = "Image"
+  architectures    = ["arm64"]
 }
 
 # Create the trigger from the S3 bucket to the Lambda function

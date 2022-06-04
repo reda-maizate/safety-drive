@@ -2,7 +2,7 @@
 
 # Create the S3 Bucket
 resource "aws_s3_bucket" "s3_bucket" {
-  bucket = "safety-drive-bucket"
+  bucket = var.bucket_name
   force_destroy = true
 }
 

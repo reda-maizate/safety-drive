@@ -1,18 +1,24 @@
 import boto3
 import cv2
 import os
+import logging
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 
 s3 = boto3.client("s3")
 
 
 def lambda_handler(event, context):
-    bucket = event["Records"][0]["s3"]["bucket"]["name"]
+    bucket = "safety-drive-bucket"
     key = "camera_video.avi"
-
+    LOGGER.info(f"started processing {bucket}/{key}")
     url = s3.generate_presigned_url(
         ClientMethod="get_object", Params={"Bucket": bucket, "Key": key}
     )
+    LOGGER.info(f"video_camera url is {url}")
     process_video_input(url)
+    LOGGER.info(f"finished processing {bucket}/{key}")
 
 
 def process_video_input(url):
@@ -27,8 +33,10 @@ def turn_videos_into_frames(url):
     while video.isOpened():
         ret, frame = video.read()
         cv2.imwrite(f"/tmp/camera_video/{idx}.jpg", frame)
-        if idx % 10 == 0:
-            print(f"INFO : {idx} number of frames saved")
+        LOGGER.info(f"{idx} frames processed")
         idx += 1
 
-    print(os.listdir("."))
+    LOGGER.info(f"Path : {os.getcwd()}")
+    os.chdir("/tmp/camera_video")
+    LOGGER.info(f"Path : {os.getcwd()}")
+
