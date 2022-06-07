@@ -185,7 +185,7 @@ def run_experiments():
 
         print(model.summary())
 
-        model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy', 'accuracy_recall'])
         # model.compile(
         #     optimizer=keras.optimizers.SGD(0.1, momentum=0.9),
         #     loss=tf.keras.losses.mean_squared_error

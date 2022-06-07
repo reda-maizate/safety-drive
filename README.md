@@ -3,9 +3,9 @@
 
 ## Prerequisites
 
-Step 1 : To run the project, you will need to have **Docker**, **Terraform** installed on your computer and **AWS account**.
+Step 1 : To run the project, you will need to have **Docker**, **Terraform**, **AWS CLI** installed on your computer and **AWS account**.
 
-Step 2 : After Docker, Terraform installed and your AWS Account created, you now need to create a file called `terraform.tfvars` in the directory `infrastructure/terraform` of the project.
+Step 2 : After Docker, Terraform and AWS CLI installed and your AWS Account created, you now need to create a file called `terraform.tfvars` in the directory `infrastructure/terraform` of the project.
 You should copy the content of the file `terraform.tfvars.example` to this file and adapt it to your needs.
 ```
 # This file is used to configure the Terraform project.
@@ -22,7 +22,9 @@ ecr_repository_name    = "" # The name of the ECR repository (e.g., my-repositor
 Final step : After your `terraform.tfvars` created and filled, launch the Docker application.
 
 ## Usage
-**_WARNING_** : The next commands after are **ONLY** available in the `infrastructure` directory. So make sure to be in the `infrastructure` directory.
+**_WARNING_** : If you are in Windows, you need to install the chocolatey package manager (https://chocolatey.org/install) and then run the command `choco install make`.
+
+The next commands are **ONLY** available in the `infrastructure` directory. So make sure to be in the `infrastructure` directory.
 
 ```bash
 cd infrastructure
