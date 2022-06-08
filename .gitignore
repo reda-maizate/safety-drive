@@ -151,5 +151,8 @@ terraform.tfs*
 # Images directories
 imgs/
 
+# Machine learning models
+*.h5
+
 # Compressed files
 *.zip
