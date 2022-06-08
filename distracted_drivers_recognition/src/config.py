@@ -9,10 +9,10 @@ OUTPUT_PATH = "../models/"
 LOG_DIR = "../logs/"
 
 # Hyperparameters
-IMG_ROWS = 32
-IMG_COLS = 32
+IMG_SIZE = (32, 32)
 IMG_CHANNELS = 3
 BATCH_SIZE = 256
+SEED = 1337
 
 # Helpers
 TRAIN_VAL_SPLIT = 0.2
