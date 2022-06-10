@@ -5,6 +5,7 @@ variable "aws_account_id" {
 }
 
 variable "region" {
+  description = "GCP Region"
   default = ""
 }
 

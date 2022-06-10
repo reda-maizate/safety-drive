@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.0"
+      version = "~> 4.0"
     }
     docker = {
       source  = "kreuzwerker/docker"
@@ -15,6 +15,6 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
-  profile = "redaprofile"
+  region  = var.region
+  profile = "cedric"
 }
