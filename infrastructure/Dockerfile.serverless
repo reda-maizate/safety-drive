@@ -1,0 +1,9 @@
+FROM public.ecr.aws/lambda/python:3.8-arm64
+
+RUN yum update -y && yum install mesa-libGL -y
+
+COPY src/lambda_serverless.py ${LAMBDA_TASK_ROOT}
+COPY requirements_serverless.txt .
+
+RUN pip3 install -r requirements_serverless.txt --target "${LAMBDA_TASK_ROOT}"
+CMD ["lambda_serverless.lambda_handler"]
