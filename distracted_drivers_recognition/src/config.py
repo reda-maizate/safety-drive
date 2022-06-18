@@ -9,15 +9,15 @@ OUTPUT_PATH = "../models/"
 LOG_DIR = "../logs/"
 
 # Hyperparameters
-IMG_SIZE = (32, 32)
+IMG_SIZE = (64, 64)
 IMG_CHANNELS = 3
-BATCH_SIZE = 256
-SEED = 1337
+BATCH_SIZE = 128
+SEED = 42
 
 # Helpers
 TRAIN_VAL_SPLIT = 0.2
 NUM_CLASSES = 10
-NUM_EPOCHS = 10
+NUM_EPOCHS = 60
 LABELS = {
     0: "safe driving",
     1: "texting - right",

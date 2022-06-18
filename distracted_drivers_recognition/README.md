@@ -47,3 +47,21 @@ This dataset contains 10 classes, below are the descriptions of each one of them
 - **c9** -- The driver was talking to a passenger while driving (talking to passenger).
 
 <img src="./input/imgs/train/c9/img_19.jpg" width="200" height="200" />
+
+## Terraform
+
+To train the model in the cloud, you need to install Terraform. Then, you need to :
+
+`terraform init`
+
+then
+
+`export AWS_PORFILE=<your-aws-profile>`
+
+then
+
+`export TF_LOG_PROVIDER=INFO`
+
+and finally,
+
+`terraform apply -var-file=<your-terraform-variables-file> -auto-approve`

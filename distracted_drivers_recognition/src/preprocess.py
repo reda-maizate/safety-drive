@@ -4,6 +4,8 @@ from tensorflow.keras import layers
 from tensorflow import keras
 
 # Load the data
+from distracted_drivers_recognition.src.utils import show_images
+
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
     conf.TRAINING_IMAGES_PATH,
     validation_split=conf.TRAIN_VAL_SPLIT,
@@ -34,3 +36,5 @@ with tf.device('/cpu:0'):
 
 train_ds = train_ds.prefetch(buffer_size=conf.BATCH_SIZE)
 val_ds = val_ds.prefetch(buffer_size=conf.BATCH_SIZE)
+
+# show_images(train_ds)

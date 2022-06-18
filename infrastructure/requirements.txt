@@ -1,1 +1,4 @@
+keras
 opencv-python
+numpy
+boto3
