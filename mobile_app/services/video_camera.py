@@ -23,7 +23,7 @@ def capture_webcam_video(temp_file_name: str) -> None:
     result = cv2.VideoWriter(f"{temp_file_name}.avi", codec, 40, size)
 
     save_video(video, result, NUM_FRAMES_WANTED)
-    send_to_s3(temp_file_name, "camera_video")
+    send_to_s3(temp_file_name, "cameravideo_0")
 
 
 def send_to_s3(temp_file_name: str, key_name: str) -> None:

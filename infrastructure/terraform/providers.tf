@@ -15,6 +15,6 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
-  profile = "redaprofile"
+  region  = var.region
+  profile = var.profile_name
 }

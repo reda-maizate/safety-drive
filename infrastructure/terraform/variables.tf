@@ -27,3 +27,7 @@ variable "bucket_name" {
 variable "ecr_repository_name" {
   default = ""
 }
+
+variable "profile_name" {
+  default = ""
+}

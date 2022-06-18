@@ -16,6 +16,7 @@ resource "aws_lambda_function" "process_lambda" {
   image_uri        = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image.id}"
   package_type     = "Image"
   architectures    = ["arm64"]
+  timeout          = "300"
 }
 
 # Create the trigger from the S3 bucket to the Lambda function
