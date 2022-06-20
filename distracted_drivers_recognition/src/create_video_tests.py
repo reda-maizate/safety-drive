@@ -1,8 +1,8 @@
-import cv2
 import os
-import config as conf
-import pandas as pd
 import shutil
+import cv2
+import pandas as pd
+import distracted_drivers_recognition.src.config as conf
 
 driver_images_df = pd.read_csv("../input/driver_imgs_list.csv")
 driver_images_df["path"] = driver_images_df.apply(
@@ -15,7 +15,13 @@ video_test_1_images = driver_images_df[
 
 
 def put_images_into_directory(images_df, directory):
-    for index, row in images_df.iterrows():
+    """
+    Put images into a directory.
+    :param images_df:
+    :param directory:
+    :return:
+    """
+    for _, row in images_df.iterrows():
         shutil.copy(row["path"], os.path.join(directory, row["img"]))
 
 
@@ -31,7 +37,7 @@ def create_video_tests(image_folder: str, video_name: str) -> None:
     """
     images = [img for img in os.listdir(image_folder) if img.endswith(".jpg")]
     frame = cv2.imread(os.path.join(image_folder, images[0]))
-    height, width, layers = frame.shape
+    height, width, _ = frame.shape
 
     video = cv2.VideoWriter(video_name, 0, 1, (width, height))
 

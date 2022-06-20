@@ -1,9 +1,8 @@
 import os
 import random
-import config as conf
-import utils
 import tensorflow as tf
 from tensorflow import keras
+from distracted_drivers_recognition.src import config as conf, utils
 
 # Use a trained model
 model = keras.models.load_model(

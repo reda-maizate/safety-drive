@@ -1,11 +1,10 @@
 import os
-import config as conf
 import tensorflow as tf
 from tensorflow import keras
 from tqdm.keras import TqdmCallback
-
-from model import model
-from preprocess import train_ds, val_ds
+from distracted_drivers_recognition.src import config as conf
+from distracted_drivers_recognition.src.model import model
+from distracted_drivers_recognition.src.preprocess import train_ds, val_ds
 
 
 if __name__ == "__main__":

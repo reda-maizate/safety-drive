@@ -1,11 +1,12 @@
-import config as conf
 import tensorflow as tf
-from tensorflow.keras import layers
+from tensorflow.keras import layers  # pylint: disable=import-error
 from tensorflow import keras
+import distracted_drivers_recognition.src.config as conf
+
+# from distracted_drivers_recognition.src.utils import show_images
+
 
 # Load the data
-from distracted_drivers_recognition.src.utils import show_images
-
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
     conf.TRAINING_IMAGES_PATH,
     validation_split=conf.TRAIN_VAL_SPLIT,

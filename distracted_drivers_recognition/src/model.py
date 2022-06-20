@@ -1,12 +1,16 @@
-from tensorflow.keras import layers
+from tensorflow.keras import layers  # pylint: disable=import-error
 from tensorflow import keras
-import config as conf
-
-from preprocess import data_augmentation
+import distracted_drivers_recognition.src.config as conf
+from distracted_drivers_recognition.src.preprocess import data_augmentation
 
 
 # Create the model
 def make_model(input_shape):
+    """
+    Create the model.
+    :param input_shape:
+    :return:
+    """
     inputs = keras.Input(shape=input_shape)
     # Image augmentation block
     x = data_augmentation(inputs)
