@@ -16,5 +16,5 @@ terraform {
 
 provider "aws" {
   region  = var.region
-  profile = "cedric"
+  profile = var.profile_name
 }
