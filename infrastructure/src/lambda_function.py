@@ -14,8 +14,10 @@ s3 = boto3.client("s3")
 
 
 def lambda_handler(event, context) -> None:
-    url = preprocess(event)
-    process(url)
+    LOGGER.info(f"started preprocessing")
+    preprocess(event)
+    process()
+    LOGGER.info(f"finished processing")
 
 
 def parse_event(event) -> Tuple[str, str, str]:
@@ -25,31 +27,26 @@ def parse_event(event) -> Tuple[str, str, str]:
     return bucket, key, user_id
 
 
-def preprocess(event) -> str:
-    LOGGER.info(f"started preprocessing")
-    (key, bucket, user_id) = parse_event(event)
+def preprocess(event) -> None:
+    (bucket, key, user_id) = parse_event(event)
     LOGGER.info(f"found new video input from {bucket}/{key} for the user_id {user_id}")
-    url = s3.generate_presigned_url(
-        ClientMethod="get_object", Params={"Bucket": bucket, "Key": key}
-    )
-    return url
+    s3.download_file(bucket, key, conf.TEMP_FILE)
 
 
-def process(url: str) -> None:
+def process() -> None:
     # Turn videos into frames
     LOGGER.info(f"started turning videos into frames")
-    frames = turn_video_into_frames(url)
+    frames = turn_video_into_frames()
     # Predict the frames with our model
     LOGGER.info(f"started predicting frames")
     scores, predictions_labels = predict(frames)
     # Post-process the predictions to match the RDS database
-    LOGGER.info(f"started post-processing predictions")
+    # LOGGER.info(f"started post-processing predictions")
     # post_process(scores, predictions_labels)
-    LOGGER.info(f"finished processing")
 
 
-def turn_video_into_frames(url: str) -> np.ndarray:
-    video = cv2.VideoCapture(url)
+def turn_video_into_frames() -> np.ndarray:
+    video = cv2.VideoCapture(conf.TEMP_FILE)
     index = 0
     frames = []
 
@@ -67,6 +64,7 @@ def turn_video_into_frames(url: str) -> np.ndarray:
 
         index += 1
 
+    video.release()
     frames = np.vstack(frames)
     return frames
 
