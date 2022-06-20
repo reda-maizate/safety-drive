@@ -4,11 +4,14 @@ import config as conf
 import pandas as pd
 import shutil
 
-driver_images_df = pd.read_csv('../input/driver_imgs_list.csv')
-driver_images_df["path"] = driver_images_df.apply(lambda x: os.path.join(conf.TRAINING_IMAGES_PATH, x[1], x[2]), axis=1)
+driver_images_df = pd.read_csv("../input/driver_imgs_list.csv")
+driver_images_df["path"] = driver_images_df.apply(
+    lambda x: os.path.join(conf.TRAINING_IMAGES_PATH, x[1], x[2]), axis=1
+)
 
-video_test_1_images = driver_images_df[(driver_images_df["subject"] == "p002") &
-                                       (driver_images_df["classname"] == "c1")]
+video_test_1_images = driver_images_df[
+    (driver_images_df["subject"] == "p002") & (driver_images_df["classname"] == "c1")
+]
 
 
 def put_images_into_directory(images_df, directory):
@@ -39,4 +42,4 @@ def create_video_tests(image_folder: str, video_name: str) -> None:
     video.release()
 
 
-create_video_tests('test_1', 'videotest_1.avi')
+create_video_tests("test_1", "videotest_1.avi")

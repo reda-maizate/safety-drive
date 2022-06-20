@@ -6,7 +6,9 @@ import tensorflow as tf
 from tensorflow import keras
 
 # Use a trained model
-model = keras.models.load_model(os.path.join(conf.OUTPUT_PATH, "base_model_ep_10_val_acc_0.82.h5"))
+model = keras.models.load_model(
+    os.path.join(conf.OUTPUT_PATH, "base_model_ep_10_val_acc_0.82.h5")
+)
 # keras.utils.plot_model(model, "model.png", show_shapes=True)
 
 # Evaluate the model

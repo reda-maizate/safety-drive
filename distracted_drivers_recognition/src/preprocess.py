@@ -27,7 +27,7 @@ val_ds = tf.keras.preprocessing.image_dataset_from_directory(
 )
 
 # Add data augmentation
-with tf.device('/cpu:0'):
+with tf.device("/cpu:0"):
     data_augmentation = keras.Sequential(
         [
             layers.RandomRotation(0.15),

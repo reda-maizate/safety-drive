@@ -17,10 +17,13 @@ if __name__ == "__main__":
 
     # Add callbacks
     callbacks = [
-        keras.callbacks.ModelCheckpoint(filepath=os.path.join(conf.OUTPUT_PATH,
-                                                              "base_model_ep_{epoch}_val_acc_{val_accuracy:.2f}.h5"),
-                                        save_best_only=True,
-                                        monitor="val_accuracy"),
+        keras.callbacks.ModelCheckpoint(
+            filepath=os.path.join(
+                conf.OUTPUT_PATH, "base_model_ep_{epoch}_val_acc_{val_accuracy:.2f}.h5"
+            ),
+            save_best_only=True,
+            monitor="val_accuracy",
+        ),
         keras.callbacks.TensorBoard(log_dir=conf.LOG_DIR),
         TqdmCallback(),
     ]
@@ -35,5 +38,9 @@ if __name__ == "__main__":
     # Train the model
     with tf.device("/gpu:0"):
         model.fit(
-            train_ds, epochs=conf.NUM_EPOCHS, callbacks=callbacks, validation_data=val_ds, verbose=0
+            train_ds,
+            epochs=conf.NUM_EPOCHS,
+            callbacks=callbacks,
+            validation_data=val_ds,
+            verbose=0,
         )

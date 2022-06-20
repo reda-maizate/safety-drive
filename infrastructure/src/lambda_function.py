@@ -21,9 +21,11 @@ def lambda_handler(event, context) -> None:
 
 
 def parse_event(event) -> Tuple[str, str, str]:
-    bucket = event['Records'][0]['s3']['bucket']['name']
-    key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
-    user_id = key.split('_')[-1].split('.')[0]
+    bucket = event["Records"][0]["s3"]["bucket"]["name"]
+    key = urllib.parse.unquote_plus(
+        event["Records"][0]["s3"]["object"]["key"], encoding="utf-8"
+    )
+    user_id = key.split("_")[-1].split(".")[0]
     return bucket, key, user_id
 
 

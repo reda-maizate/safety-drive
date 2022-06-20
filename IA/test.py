@@ -22,7 +22,10 @@ def load_test(size=200000, img_rows=64, img_cols=64, color_type=3):
     """
     Same as above but for validation dataset
     """
-    path = os.path.join('C:/Users/Bonjour/Etudes&Travail/Projets/PyCharm/DeepLearningSafetyDrive/Data/my_test', '*.jpg')
+    path = os.path.join(
+        "C:/Users/Bonjour/Etudes&Travail/Projets/PyCharm/DeepLearningSafetyDrive/Data/my_test",
+        "*.jpg",
+    )
     files = sorted(glob(path))
     X_test, X_test_id = [], []
     total = 0
@@ -51,23 +54,28 @@ color_type = 1
 nb_test_samples = 200
 
 # Loading validation images
-test_files, test_targets = read_and_normalize_sampled_test_data(nb_test_samples, img_rows, img_cols, color_type)
+test_files, test_targets = read_and_normalize_sampled_test_data(
+    nb_test_samples, img_rows, img_cols, color_type
+)
 
-activity_map = {'c0': 'Safe driving',
-                'c1': 'Texting - right',
-                'c2': 'Talking on the phone - right',
-                'c3': 'Texting - left',
-                'c4': 'Talking on the phone - left',
-                'c5': 'Operating the radio',
-                'c6': 'Drinking',
-                'c7': 'Reaching behind',
-                'c8': 'Hair and makeup',
-                'c9': 'Talking to passenger'}
+activity_map = {
+    "c0": "Safe driving",
+    "c1": "Texting - right",
+    "c2": "Talking on the phone - right",
+    "c3": "Texting - left",
+    "c4": "Talking on the phone - left",
+    "c5": "Operating the radio",
+    "c6": "Drinking",
+    "c7": "Reaching behind",
+    "c8": "Hair and makeup",
+    "c9": "Talking to passenger",
+}
 
 batch_size = 40
 
 model = keras.models.load_model(
-    "saved_model/cnn/3cnn_32_64_128_neurons_bs40/model_seed_7_2022-05-28_18_12_51.575187.keras")
+    "saved_model/cnn/3cnn_32_64_128_neurons_bs40/model_seed_7_2022-05-28_18_12_51.575187.keras"
+)
 
 # Details about the model
 model.summary()
@@ -75,13 +83,15 @@ model.summary()
 for i in range(len(test_files)):
     img_brute = test_files[i]
     img_brute = cv2.resize(img_brute, (img_rows, img_cols))
-    plt.imshow(img_brute, cmap='gray')
+    plt.imshow(img_brute, cmap="gray")
 
     new_img = img_brute.reshape(-1, img_rows, img_cols, 1)
 
     y_prediction = model.predict(new_img, batch_size=batch_size, verbose=1)
-    print('Y prediction: {}'.format(y_prediction))
-    print('label:', test_targets[i])
-    print('Predicted: {}'.format(activity_map.get('c{}'.format(np.argmax(y_prediction)))))
+    print("Y prediction: {}".format(y_prediction))
+    print("label:", test_targets[i])
+    print(
+        "Predicted: {}".format(activity_map.get("c{}".format(np.argmax(y_prediction))))
+    )
 
     plt.show()

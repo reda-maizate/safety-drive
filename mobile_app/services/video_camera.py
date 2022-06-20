@@ -28,11 +28,11 @@ def capture_webcam_video(temp_file_name: str) -> None:
 
 def send_to_s3(temp_file_name: str, key_name: str) -> None:
     client = boto3.client(
-            "s3",
-            region_name="us-east-1",
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        )
+        "s3",
+        region_name="us-east-1",
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    )
     client.upload_file(f"{temp_file_name}.avi", S3_BUCKET_NAME, f"{key_name}.avi")
     os.remove(f"{temp_file_name}.avi")
     print("The video was sent to S3")
