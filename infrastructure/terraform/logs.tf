@@ -41,8 +41,3 @@ resource "aws_iam_role_policy_attachment" "function_logging_policy_attachment" {
   role = aws_iam_role.lambda_iam.id
   policy_arn = aws_iam_policy.process_logging_policy.arn
 }
-
-resource "aws_iam_role_policy_attachment" "logging_policy_attachment_serverless" {
-  role = aws_iam_role.lambda_iam_serverless.id
-  policy_arn = aws_iam_policy.process_logging_policy.arn
-}

@@ -11,7 +11,7 @@ resource "aws_lambda_function" "process_lambda" {
   depends_on       = [
                       null_resource.ecr_image
                      ]
-  function_name    = var.function_name
+  function_name    = var.function_name_pipeline
   role             = aws_iam_role.lambda_iam.arn
   image_uri        = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image.id}"
   package_type     = "Image"

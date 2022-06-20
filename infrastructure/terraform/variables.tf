@@ -5,11 +5,14 @@ variable "aws_account_id" {
 }
 
 variable "region" {
-  description = "GCP Region"
   default = ""
 }
 
-variable "function_name" {
+variable "function_name_pipeline" {
+  default = ""
+}
+
+variable "function_name_serverless" {
   default = ""
 }
 
@@ -17,7 +20,7 @@ variable "lambda_role_name" {
   default = ""
 }
 
-variable "lambda_iam_policy_name" {
+variable "lambda_iam_policy_name_pipeline" {
   default = ""
 }
 
@@ -29,6 +32,14 @@ variable "ecr_repository_name" {
   default = ""
 }
 
+variable "api_gateway_name" {
+  default = ""
+}
+
 variable "profile_name" {
+  default = ""
+}
+
+variable "os" {
   default = ""
 }

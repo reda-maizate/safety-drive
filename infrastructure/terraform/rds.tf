@@ -42,8 +42,9 @@ resource "aws_db_instance" "DB" {
 
   provisioner "local-exec" {
     command = <<EOF
+                  pip install pymysql
                   python ../script_create_db.py ${self.endpoint} ${self.username} ${self.password}
               EOF
-    interpreter = ["PowerShell", "-Command"]
+    interpreter = var.os == "win" ? ["PowerShell", "-Command"] : []
   }
 }

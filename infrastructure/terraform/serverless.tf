@@ -1,9 +1,3 @@
-#data "archive_file" "lambda-zip" {
-#  type        = "zip"
-#  source_dir  = "../src"
-#  output_path = "lambda.zip"
-#}
-
 data "aws_subnets" "subnet_lambda" {
   filter {
     name   = "vpc-id"
@@ -18,26 +12,19 @@ data "aws_security_groups" "security_group_lambda" {
   }
 }
 
-resource "aws_iam_role" "lambda_iam_serverless" {
-  name               = "lambda-iam"
-  assume_role_policy = data.aws_iam_policy_document.policy_lambda_iam.json
-}
-
 resource "aws_iam_role_policy_attachment" "iam_role_policy_attachment_lambda_vpc_access_execution" {
-  role       = aws_iam_role.lambda_iam_serverless.name
+  role       = aws_iam_role.lambda_iam.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 resource "aws_lambda_function" "lambda_serverless" {
-#  filename         = "lambda.zip"
-  function_name    = "lambda-function"
-  role             = aws_iam_role.lambda_iam_serverless.arn
-  image_uri = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image_serverless.id}"
-  package_type = "Image"
-  architectures = ["arm64"]
-#  handler          = "lambda_serverless.lambda_handler"
-#  source_code_hash = data.archive_file.lambda-zip.output_base64sha256
-#  runtime          = "python3.8"
+  depends_on           = [
+                          null_resource.ecr_image_serverless
+                         ]
+  function_name        = var.function_name_serverless
+  role                 = aws_iam_role.lambda_iam.arn
+  image_uri            = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image_serverless.id}"
+  package_type         = "Image"
 
   vpc_config {
     security_group_ids = data.aws_security_groups.security_group_lambda.ids
@@ -58,7 +45,7 @@ output "test" {
 }
 
 resource "aws_apigatewayv2_api" "lambda_api" {
-  name          = "v2-http-api"
+  name          = var.api_gateway_name
   protocol_type = "HTTP"
 }
 
