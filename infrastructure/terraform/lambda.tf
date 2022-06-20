@@ -15,7 +15,7 @@ resource "aws_lambda_function" "process_lambda" {
   role             = aws_iam_role.lambda_iam.arn
   image_uri        = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image.id}"
   package_type     = "Image"
-  architectures    = ["arm64"]
+  memory_size      = "1024"
   timeout          = "300"
 }
 

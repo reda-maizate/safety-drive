@@ -152,7 +152,6 @@ terraform.tfs*
 imgs/
 
 # Machine learning models and logs
-*.h5
 *tfevents*
 
 # Compressed files

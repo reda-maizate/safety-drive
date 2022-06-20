@@ -12,3 +12,4 @@ LABELS = {
     9: "talking to passenger",
 }
 FRAME_RATE = 8
+TEMP_FILE = "/tmp/temp_video.avi"
