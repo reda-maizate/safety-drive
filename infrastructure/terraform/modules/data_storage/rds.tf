@@ -48,3 +48,28 @@ resource "aws_db_instance" "DB" {
     interpreter = var.os == "win" ? ["PowerShell", "-Command"] : []
   }
 }
+
+resource "aws_rds_cluster" "test_db" {
+  cluster_identifier = "rds-cluster-safety-drive"
+  engine             = "aurora-mysql"
+  engine_mode        = "provisioned"
+  engine_version     = "8.0.mysql_aurora.3.02.0"
+  database_name      = "test_db_1"
+  master_username    = "safetyDriveAdmin"
+  master_password    = "safety-drive"
+  skip_final_snapshot = true
+  vpc_security_group_ids = [aws_security_group.Security-Group-RDS.id]
+
+  serverlessv2_scaling_configuration {
+    max_capacity = 1.0
+    min_capacity = 0.5
+  }
+}
+
+resource "aws_rds_cluster_instance" "example" {
+  identifier = "aurora-instance-safety-drive"
+  cluster_identifier = aws_rds_cluster.test_db.id
+  instance_class     = "db.serverless"
+  engine             = aws_rds_cluster.test_db.engine
+  engine_version     = aws_rds_cluster.test_db.engine_version
+}

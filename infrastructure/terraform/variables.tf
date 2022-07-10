@@ -12,7 +12,7 @@ variable "function_name_pipeline" {
   default = ""
 }
 
-variable "function_name_serverless" {
+variable "function_name_web_app" {
   default = ""
 }
 
