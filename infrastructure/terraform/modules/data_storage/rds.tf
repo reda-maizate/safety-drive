@@ -12,7 +12,7 @@ resource "aws_security_group" "Security-Group-RDS" {
     from_port        = 3306
     to_port          = 3306
     protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
+    cidr_blocks      = ["0.0.0.0/0"] # Non sécurisé, dans le cadre professionnel
   }
 
   egress {
@@ -27,29 +27,7 @@ resource "aws_security_group" "Security-Group-RDS" {
   }
 }
 
-resource "aws_db_instance" "DB" {
-  engine = "mysql"
-  engine_version = "8.0.27"
-  username = "safetyDriveAdmin"
-  password = "safety-drive"
-  instance_class = "db.t2.micro"
-  allocated_storage = 20
-  max_allocated_storage = 100
-  identifier = "rds-safety-drive"
-  vpc_security_group_ids = [aws_security_group.Security-Group-RDS.id] # Non sécurisé, dans le cadre professionnel
-  skip_final_snapshot = true
-  publicly_accessible = true
-
-  provisioner "local-exec" {
-    command = <<EOF
-                  pip install pymysql
-                  python ../script_create_db.py ${self.endpoint} ${self.username} ${self.password}
-              EOF
-    interpreter = var.os == "win" ? ["PowerShell", "-Command"] : []
-  }
-}
-
-resource "aws_rds_cluster" "test_db" {
+resource "aws_rds_cluster" "rds-cluster" {
   cluster_identifier = "rds-cluster-safety-drive"
   engine             = "aurora-mysql"
   engine_mode        = "provisioned"
@@ -66,10 +44,19 @@ resource "aws_rds_cluster" "test_db" {
   }
 }
 
-resource "aws_rds_cluster_instance" "example" {
+resource "aws_rds_cluster_instance" "rds-instance" {
   identifier = "aurora-instance-safety-drive"
-  cluster_identifier = aws_rds_cluster.test_db.id
+  cluster_identifier = aws_rds_cluster.rds-cluster.id
   instance_class     = "db.serverless"
-  engine             = aws_rds_cluster.test_db.engine
-  engine_version     = aws_rds_cluster.test_db.engine_version
+  engine             = aws_rds_cluster.rds-cluster.engine
+  engine_version     = aws_rds_cluster.rds-cluster.engine_version
+  publicly_accessible = true
+
+  provisioner "local-exec" {
+    command = <<EOF
+                  pip install pymysql
+                  python ../script_create_db.py ${self.endpoint} ${aws_rds_cluster.rds-cluster.master_username} ${aws_rds_cluster.rds-cluster.master_password}
+              EOF
+    interpreter = var.os == "win" ? ["PowerShell", "-Command"] : []
+  }
 }
