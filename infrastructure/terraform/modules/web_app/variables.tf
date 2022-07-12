@@ -54,3 +54,7 @@ variable "db_username" {
 variable "db_password" {
   default = ""
 }
+
+variable "vpc_id" {
+  default = ""
+}
