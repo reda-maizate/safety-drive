@@ -1,29 +1,8 @@
-data "aws_vpc" "default" {
-  default = true
-}
-
-resource "aws_security_group" "Security-Group-RDS" {
-  name        = "Security-Group-RDS"
-  description = "Allow connection to RDS"
-  vpc_id      = data.aws_vpc.default.id
-
-  ingress {
-    description      = "MySQL"
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"] # Non sécurisé, dans le cadre professionnel
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-
+resource "aws_db_subnet_group" "db-subnets" {
+  name = "db-subnets"
+  subnet_ids = aws_subnet.subnets-public.*.id
   tags = {
-    Name = "Security-Group-RDS"
+    Name = "DB-subnet-group"
   }
 }
 
@@ -32,11 +11,12 @@ resource "aws_rds_cluster" "rds-cluster" {
   engine             = "aurora-mysql"
   engine_mode        = "provisioned"
   engine_version     = "8.0.mysql_aurora.3.02.0"
-  database_name      = "test_db_1"
+  database_name      = "safety_drive_db"
   master_username    = "safetyDriveAdmin"
   master_password    = "safety-drive"
   skip_final_snapshot = true
-  vpc_security_group_ids = [aws_security_group.Security-Group-RDS.id]
+  db_subnet_group_name = aws_db_subnet_group.db-subnets.id
+  vpc_security_group_ids = [aws_default_security_group.default_security_group.id]
 
   serverlessv2_scaling_configuration {
     max_capacity = 1.0

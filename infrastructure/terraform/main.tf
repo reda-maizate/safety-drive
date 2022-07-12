@@ -38,4 +38,5 @@ module "web_app" {
   db_endpoint = module.data_storage.db_endpoint
   db_username = module.data_storage.db_username
   db_password = module.data_storage.db_password
+  vpc_id = module.data_storage.vpc_id
 }

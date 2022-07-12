@@ -13,3 +13,7 @@ output "db_username" {
 output "db_password" {
   value = aws_rds_cluster.rds-cluster.master_password
 }
+
+output "vpc_id" {
+  value = aws_vpc.my-vpc.id
+}
