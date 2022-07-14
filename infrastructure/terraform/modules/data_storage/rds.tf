@@ -35,7 +35,7 @@ resource "aws_rds_cluster_instance" "rds-instance" {
   provisioner "local-exec" {
     command = <<EOF
                   pip install pymysql
-                  python ../script_create_db.py ${self.endpoint} ${aws_rds_cluster.rds-cluster.master_username} ${aws_rds_cluster.rds-cluster.master_password}
+                  python3 ../script_create_db.py ${self.endpoint} ${aws_rds_cluster.rds-cluster.master_username} ${aws_rds_cluster.rds-cluster.master_password}
               EOF
     interpreter = var.os == "win" ? ["PowerShell", "-Command"] : []
   }

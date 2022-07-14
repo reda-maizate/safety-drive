@@ -17,6 +17,9 @@ module "pipeline_mobile_app_data" {
   function_name_pipeline = var.function_name_pipeline
   lambda_iam_policy_name_pipeline = var.lambda_iam_policy_name_pipeline
   s3_bucket_id = module.data_storage.s3_bucket_id
+  rds_endpoint = module.data_storage.db_endpoint
+  rds_username = module.data_storage.db_username
+  rds_password = module.data_storage.db_password
 }
 
 module "web_app" {
