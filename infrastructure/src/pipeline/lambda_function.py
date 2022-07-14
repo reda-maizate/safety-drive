@@ -13,7 +13,7 @@ import pymysql
 rds_endpoint = os.environ["RDS_ENDPOINT"]
 rds_username = os.environ["RDS_USERNAME"]
 rds_password = os.environ["RDS_PASSWORD"]
-rds_db_name = "PREDICTIONS"
+rds_db_name = "db_safety_drive"
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
