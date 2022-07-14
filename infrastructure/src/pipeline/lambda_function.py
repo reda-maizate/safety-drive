@@ -1,5 +1,6 @@
 import os
 import urllib
+from datetime import datetime
 from typing import Tuple, List
 import logging
 import boto3
@@ -135,7 +136,7 @@ def post_process(user_id: str, predictions_labels: List[str]):
             session.execute(
                 "INSERT INTO PREDICTIONS (value, datetime, user) "
                 "VALUES (%s, %s, %s)",
-                (prediction, "NOW()", user_id),
+                (prediction, datetime.now(), user_id),
             )
         conn.commit()
     LOGGER.info(f"finished post-processing predictions")
