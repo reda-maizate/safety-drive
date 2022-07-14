@@ -4,7 +4,7 @@ import boto3
 
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-S3_BUCKET_NAME = "safety-drive-bucket"
+S3_BUCKET_NAME = "safety-drive-bucket-bis"
 
 NUM_FRAMES_WANTED = 25
 

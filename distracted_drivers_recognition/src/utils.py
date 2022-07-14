@@ -52,3 +52,20 @@ def show_image(image, score):
     plt.title(f"Label: {conf.LABELS[np.argmax(score)]} / Score: {np.max(score):.2f}")
     plt.axis("off")
     plt.show()
+
+
+# Visualize multiple images and their labels
+def show_images_with_labels(images, scores):
+    """
+    Show multiple images and their labels.
+    :param images: list of images
+    :param scores: list of scores
+    :return:
+    """
+    plt.figure(figsize=(10, 10))
+    for i in range(9):
+        plt.subplot(3, 3, i + 1)
+        plt.imshow(tf.squeeze(images[i]).numpy().astype("uint8"))
+        plt.title(f"Label: {np.argmax(scores[i])} / Pred: {np.argmax(scores[i])}")
+        plt.axis("off")
+    plt.show()

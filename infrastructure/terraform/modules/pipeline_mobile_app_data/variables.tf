@@ -26,3 +26,15 @@ variable "lambda_iam_policy_name_pipeline" {
 variable "s3_bucket_id" {
   default = ""
 }
+
+variable "rds_endpoint" {
+  default = ""
+}
+
+variable "rds_username" {
+  default = ""
+}
+
+variable "rds_password" {
+  default = ""
+}
