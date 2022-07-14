@@ -48,7 +48,10 @@ This dataset contains 10 classes, below are the descriptions of each one of them
 
 <img src="./input/imgs/train/c9/img_19.jpg" width="200" height="200" />
 
-## Terraform
+## Data preprocessing
+
+
+## Terraform (Not accessible yet)
 
 To train the model in the cloud, you need to install Terraform. Then, you need to :
 

@@ -17,6 +17,15 @@ resource "aws_lambda_function" "process_lambda" {
   package_type     = "Image"
   memory_size      = "1024"
   timeout          = "300"
+
+  environment {
+    variables = {
+      RDS_ENDPOINT = var.rds_endpoint
+      RDS_USERNAME = var.rds_username
+      RDS_PASSWORD = var.rds_password
+    }
+  }
+
 }
 
 # Create the trigger from the S3 bucket to the Lambda function

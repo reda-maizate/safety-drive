@@ -1,11 +1,19 @@
+import os
 import urllib
-from typing import Tuple
+from typing import Tuple, List
 import logging
 import boto3
 import cv2
 import numpy as np
 import keras
 import config as conf
+import pymysql
+
+
+rds_endpoint = os.environ["RDS_ENDPOINT"]
+rds_username = os.environ["RDS_USERNAME"]
+rds_password = os.environ["RDS_PASSWORD"]
+rds_db_name = "PREDICTIONS"
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
@@ -21,8 +29,8 @@ def lambda_handler(event, context) -> None:  # pylint: disable=unused-argument
     :return:
     """
     LOGGER.info("started preprocessing")
-    preprocess(event)
-    process()
+    user_id = preprocess(event)
+    process(user_id)
     LOGGER.info("finished processing")
 
 
@@ -40,7 +48,7 @@ def parse_event(event) -> Tuple[str, str, str]:
     return bucket, key, user_id
 
 
-def preprocess(event) -> None:
+def preprocess(event) -> str:
     """
     Preprocess the video.
     :param event:
@@ -49,9 +57,10 @@ def preprocess(event) -> None:
     (bucket, key, user_id) = parse_event(event)
     LOGGER.info(f"found new video input from {bucket}/{key} for the user_id {user_id}")
     s3.download_file(bucket, key, conf.TEMP_FILE)
+    return user_id
 
 
-def process() -> None:
+def process(user_id: str) -> None:
     """
     Process the video.
     :return:
@@ -61,10 +70,10 @@ def process() -> None:
     frames = turn_video_into_frames()
     # Predict the frames with our model
     LOGGER.info("started predicting frames")
-    predict(frames)
+    scores, predictions_labels = predict(frames)
     # Post-process the predictions to match the RDS database
-    # LOGGER.info(f"started post-processing predictions")
-    # post_process(scores, predictions_labels)
+    LOGGER.info(f"started post-processing predictions")
+    post_process(user_id, predictions_labels)
 
 
 def turn_video_into_frames() -> np.ndarray:
@@ -95,7 +104,7 @@ def turn_video_into_frames() -> np.ndarray:
     return frames
 
 
-def predict(frames: np.ndarray) -> None:
+def predict(frames: np.ndarray) -> Tuple[List[List[float]], List[str]]:
     """
     Predict the frames with our model.
     :param frames:
@@ -105,8 +114,28 @@ def predict(frames: np.ndarray) -> None:
     scores = model.predict(frames)
     predictions_labels = [conf.LABELS[np.argmax(score)] for score in scores]
     LOGGER.info(f"predictions_labels: {predictions_labels}")
-    # return scores, predictions_labels
+    return predictions_labels
 
 
-# def post_process(scores: List[List[float]], predictions_labels: List[str]):
-#     ...
+def post_process(user_id: str, predictions_labels: List[str]):
+    try:
+        conn = pymysql.connect(
+            host=rds_endpoint,
+            user=rds_username,
+            passwd=rds_password,
+            db=rds_db_name,
+            connect_timeout=5,
+        )
+    except pymysql.MySQLError as e:
+        LOGGER.error("ERROR: Unexpected error: Could not connect to MySQL instance.")
+        LOGGER.error(e)
+
+    with conn.cursor() as session:
+        for prediction in predictions_labels:
+            session.execute(
+                "INSERT INTO PREDICTIONS (value, datetime, user) "
+                "VALUES (%s, %s, %s)",
+                (prediction, "NOW()", user_id),
+            )
+        conn.commit()
+    LOGGER.info(f"finished post-processing predictions")
