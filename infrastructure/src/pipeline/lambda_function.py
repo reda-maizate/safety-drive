@@ -70,7 +70,7 @@ def process(user_id: str) -> None:
     frames = turn_video_into_frames()
     # Predict the frames with our model
     LOGGER.info("started predicting frames")
-    scores, predictions_labels = predict(frames)
+    predictions_labels = predict(frames)
     # Post-process the predictions to match the RDS database
     LOGGER.info(f"started post-processing predictions")
     post_process(user_id, predictions_labels)
@@ -104,7 +104,7 @@ def turn_video_into_frames() -> np.ndarray:
     return frames
 
 
-def predict(frames: np.ndarray) -> Tuple[List[List[float]], List[str]]:
+def predict(frames: np.ndarray) -> List[str]:
     """
     Predict the frames with our model.
     :param frames:
