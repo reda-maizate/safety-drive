@@ -24,9 +24,9 @@ def run():
         sql = """use db_safety_drive"""
         cursor.execute(sql)
 
-        sql = """CREATE TABLE USERS (id_user integer primary key, email varchar(128) not null, password varchar(512) not null, pseudo varchar(128) not null)"""
+        sql = """CREATE TABLE USERS (id_user integer primary key auto_increment, email varchar(128) not null, password varchar(512) not null, pseudo varchar(128) not null)"""
         cursor.execute(sql)
-        sql = """CREATE TABLE PREDICTIONS (id_prediction integer primary key, value integer not null, datetime datetime not null, user integer references USERS(id_user))"""
+        sql = """CREATE TABLE PREDICTIONS (id_prediction integer primary key auto_increment, value integer not null, datetime datetime not null, user integer references USERS(id_user))"""
         cursor.execute(sql)
     else:
         print(
