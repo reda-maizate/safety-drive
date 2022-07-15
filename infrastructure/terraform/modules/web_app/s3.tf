@@ -7,7 +7,7 @@ data "archive_file" "website" {
 
 resource "aws_s3_object" "website" {
   depends_on = [
-    "data.archive_file.website"
+    data.archive_file.website
   ]
   bucket = var.s3_bucket_name
   key    = "website.zip"
