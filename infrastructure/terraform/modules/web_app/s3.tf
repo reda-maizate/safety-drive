@@ -1,6 +1,6 @@
 data "archive_file" "website" {
   type = "zip"
-  source = "../../../src/web_app"
+  source_dir = "../../../src/web_app"
   output_path = "../../../src/web_app.zip"
 }
 
