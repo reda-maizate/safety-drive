@@ -1,4 +1,4 @@
 boto3
-flask
-Flask-WTF
+fastapi
 pymysql
+mangum

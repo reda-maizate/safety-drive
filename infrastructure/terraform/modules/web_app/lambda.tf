@@ -9,8 +9,8 @@ resource "aws_lambda_function" "lambda_web_app" {
                          ]
   function_name        = var.function_name_web_app
   role                 = var.lambda_iam_arn
-  image_uri            = "${var.repository_url}@${data.aws_ecr_image.lambda_image_web_app.id}"
-  package_type         = "Image"
+  s3_bucket            = var.s3_bucket_name
+  s3_key               = "website.zip"
 
   vpc_config {
     security_group_ids = data.aws_security_groups.security_group_lambda.ids
