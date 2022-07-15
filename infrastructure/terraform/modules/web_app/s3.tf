@@ -1,12 +1,11 @@
 data "archive_file" "website" {
-  depends_on = [aws_lambda_function.lambda_web_app]
   type = "zip"
   source = "../../../src/web_app"
   output_path = "../../../src/web_app.zip"
 }
 
 
-resource "aws_s3_object" "lambda_hello_world" {
+resource "aws_s3_object" "website" {
   depends_on = [
     "data.archive_file.website"
   ]
