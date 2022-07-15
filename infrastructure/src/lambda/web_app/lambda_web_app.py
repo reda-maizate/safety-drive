@@ -1,6 +1,9 @@
 import json
 import pymysql
 import os
+import logging
+
+LOGGER = logging.getLogger(__name__)
 
 
 def lambda_handler(event, context):  # pylint: disable=unused-argument
@@ -14,13 +17,8 @@ def lambda_handler(event, context):  # pylint: disable=unused-argument
     username = os.environ.get("MASTER_USERNAME")
     password = os.environ.get("MASTER_PASSWORD")
 
-    # print("Globals", endpoint)
-    # print("Globals", username)
-    # print("Globals", password)
-
     database = pymysql.connect(
-        # ToDo
-        host=endpoint,  # Point de terminaison
+        host=endpoint,
         user=username,
         password=password,
         port=3306,
@@ -32,6 +30,6 @@ def lambda_handler(event, context):  # pylint: disable=unused-argument
     rows = cursor.fetchall()
 
     for row in rows:
-        print(row)
+        LOGGER.info(row)
 
-    return {"statusCode": 200, "body": "OK"}
+    return {"statusCode": 200, "body": {"OK"}}

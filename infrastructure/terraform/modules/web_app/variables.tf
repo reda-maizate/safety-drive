@@ -58,3 +58,7 @@ variable "db_password" {
 variable "vpc_id" {
   default = ""
 }
+
+variable "s3_bucket_name" {
+  default = ""
+}

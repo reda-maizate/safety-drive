@@ -42,4 +42,6 @@ module "web_app" {
   db_username = module.data_storage.db_username
   db_password = module.data_storage.db_password
   vpc_id = module.data_storage.vpc_id
+  s3_bucket_name = var.bucket_name
+
 }

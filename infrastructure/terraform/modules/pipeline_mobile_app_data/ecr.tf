@@ -17,7 +17,7 @@ resource aws_ecr_repository repo {
 resource null_resource ecr_image {
   depends_on = [aws_ecr_repository.repo]
  triggers = {
-   python_file = md5(file("../src/pipeline/lambda_function.py"))
+   python_file = md5(file("../src/lambda/pipeline/lambda_function.py"))
    docker_file = md5(file("../Dockerfile"))
  }
  provisioner "local-exec" {
