@@ -6,7 +6,7 @@ locals {
 resource null_resource ecr_image_web_app {
 #  depends_on  = [aws_ecr_repository.repo]
   triggers    = {
-    python_file = md5(file("../src/web_app/lambda_web_app.py"))
+    python_file = md5(file("../src/lambda/web_app/lambda_web_app.py"))
     docker_file = md5(file("../Dockerfile.web_app"))
  }
  provisioner "local-exec" {
