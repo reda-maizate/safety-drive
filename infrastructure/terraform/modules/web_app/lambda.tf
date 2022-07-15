@@ -5,12 +5,14 @@ resource "aws_iam_role_policy_attachment" "iam_role_policy_attachment_lambda_vpc
 
 resource "aws_lambda_function" "lambda_web_app" {
   depends_on           = [
-                          null_resource.ecr_image_web_app
+                          aws_s3_object.website
                          ]
   function_name        = var.function_name_web_app
   role                 = var.lambda_iam_arn
   s3_bucket            = var.s3_bucket_name
   s3_key               = "website.zip"
+  handler              = "web_app.main.handler"
+  runtime              = "python3.6"
 
   vpc_config {
     security_group_ids = data.aws_security_groups.security_group_lambda.ids
