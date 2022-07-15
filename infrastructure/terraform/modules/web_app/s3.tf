@@ -6,8 +6,8 @@
 
 resource "null_resource" "zip_app_and_dependencies" {
   triggers = {
-    python_file = md5(file("../../../src/web_app/main.py"))
-    html_file   = md5(file("../../../src/web_app/templates/index.html"))
+    python_file = md5(file("${path.root}/infrastructure/src/web_app/main.py"))
+    html_file   = md5(file("${path.root}/infrastructure/src/web_app/templates/index.html"))
   }
 
   provisioner "local-exec" {
