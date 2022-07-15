@@ -3,7 +3,7 @@ WORKDIR ${LAMBDA_TASK_ROOT}
 
 RUN yum update -y && yum install mesa-libGL -y
 
-COPY src/pipeline .
+COPY src/lambda/pipeline .
 COPY requirements.txt requirements.txt
 
 RUN pip3 install --upgrade pip
