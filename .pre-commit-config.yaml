@@ -5,10 +5,12 @@ repos:
     rev: 22.3.0
     hooks:
       - id: black
+        exclude: infrastructure/src/web_app/package
         args: [--diff, --check]
 
   - repo: https://github.com/pre-commit/mirrors-pylint
     rev: v3.0.0a3
     hooks:
       - id: pylint
+        exclude: infrastructure/src/web_app/package
         args: []

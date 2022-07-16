@@ -155,4 +155,4 @@ imgs/
 *tfevents*
 
 # Compressed files
-*.zip
+#*.zip
