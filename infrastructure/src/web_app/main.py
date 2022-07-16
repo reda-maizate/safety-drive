@@ -35,9 +35,9 @@ async def index(request: Request):
     with conn.cursor() as session:
         session.execute("SELECT * FROM PREDICTIONS")
         result = session.fetchall()
-        LOGGER.info(result)
+        print(result)
     return templates.TemplateResponse(
-        "index.html", {"request": request, "users": json.dumps(result)}
+        "index.html", {"request": request, "users": json.dumps(result, default=str)}
     )
 
 
