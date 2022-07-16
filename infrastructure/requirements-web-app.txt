@@ -2,3 +2,4 @@ boto3
 fastapi
 pymysql
 mangum
+jinja2
