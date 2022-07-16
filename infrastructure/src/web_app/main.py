@@ -33,7 +33,7 @@ async def index(request: Request):
         LOGGER.error(e)
 
     with conn.cursor() as session:
-        session.execute("SELECT * FROM users")
+        session.execute("SELECT * FROM USERS")
         result = session.fetchall()
         LOGGER.info(result)
     return templates.TemplateResponse(
