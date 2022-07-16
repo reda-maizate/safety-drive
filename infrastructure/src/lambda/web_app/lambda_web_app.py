@@ -32,7 +32,7 @@ def lambda_handler(event, context):  # pylint: disable=unused-argument
         LOGGER.error(e)
 
     with conn.cursor() as session:
-        session.execute("SELECT * FROM users")
+        session.execute("SELECT * FROM USERS")
         result = session.fetchall()
         LOGGER.info(result)
     return {"statusCode": 200, "users": json.dumps(result)}
