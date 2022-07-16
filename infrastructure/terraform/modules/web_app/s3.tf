@@ -28,5 +28,5 @@ resource "aws_s3_object" "website" {
   key    = "website.zip"
   source = "web_app.zip"
 
-  #etag = filemd5("web_app.zip")
+  etag = filemd5("${path.cwd}/web_app.zip")
 }
