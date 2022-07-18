@@ -12,5 +12,5 @@ function_name_pipeline          = ""
 lambda_iam_policy_name_pipeline = ""
 
 # Serverless
-function_name_serverless        = ""
+function_name_web_app           = ""
 api_gateway_name                = ""
