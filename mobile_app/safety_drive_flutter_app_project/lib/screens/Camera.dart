@@ -1,16 +1,22 @@
+import 'dart:io';
+import 'package:aws_s3_plugin_flutter/aws_s3_plugin_flutter.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:safety_drive_flutter_app_project/screens/Home.dart';
+import 'package:safety_drive_flutter_app_project/db/UserModel.dart';
+import 'package:safety_drive_flutter_app_project/screens/Guest.dart';
 
 class CameraScreen extends StatefulWidget {
-  List<CameraDescription> cameras = <CameraDescription>[];
+  final UserModel userModel;
+  final List<CameraDescription> availableCameras;
 
-  CameraScreen({
+  const CameraScreen({
     Key? key,
-    required this.cameras,
-  }) : super(key: key);
+    required this.userModel,
+    required this.availableCameras,
+  })
+      : super(key: key);
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -18,32 +24,38 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   late Future<void> _initializeControllerFuture;
-  late CameraController _controller;
-  int _selectedCameraIndex = -1;
+  late CameraController _cameraController;
+  bool _isRecording = false;
+  bool _stopingInProgress = true;
+  int _selectedCameraIndex = 1;
   Icon videoIcon = const Icon(
     Icons.videocam,
     color: Colors.black,
   );
-  bool _isRecorded = false;
+
+  @override
+  void dispose() {
+    _cameraController.dispose();
+    super.dispose();
+  }
 
   Future<void> initCamera(CameraDescription camera) async {
-    _controller = CameraController(
+    _cameraController = CameraController(
       camera,
-      ResolutionPreset.medium,
-      imageFormatGroup: ImageFormatGroup.yuv420,
+      ResolutionPreset.max,
     );
 
-    _controller.addListener(() {
+    _cameraController.addListener(() {
       if (mounted) {
         setState(() {});
       }
     });
 
-    if (_controller.value.hasError) {
-      print('Camera Error ${_controller.value.errorDescription}');
+    if (_cameraController.value.hasError) {
+      print('Camera Error ${_cameraController.value.errorDescription}');
     }
 
-    _initializeControllerFuture = _controller.initialize();
+    _initializeControllerFuture = _cameraController.initialize();
 
     if (mounted) {
       setState(() {});
@@ -52,40 +64,10 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Future<void> _cameraToggle() async {
     setState(() {
-      _selectedCameraIndex = _selectedCameraIndex > -1
-          ? _selectedCameraIndex == 0
-              ? 1
-              : 0
-          : 0;
+      _selectedCameraIndex = _selectedCameraIndex == 0 ? 1 : 0;
     });
 
-    await initCamera(widget.cameras[_selectedCameraIndex]);
-  }
-
-  // Future<void> _takePhoto() async {
-    
-  // }
-
-  Future<void> _takeVideo(bool isReccorded) async {
-    try {
-      await _initializeControllerFuture;
-
-      final String pathVideo = join((await getTemporaryDirectory()).path,
-          's{DateTime.now().millisecondsSinceEpoch}.avi');
-      
-      print(_controller);
-      if (isReccorded) {
-        print(_controller);
-        await _controller.startVideoRecording();
-      } else {
-        XFile video = await _controller.stopVideoRecording();
-        print(video);
-        // await video.saveTo(pathVideo);
-      }
-      print(pathVideo);
-    } catch (e) {
-      print(e);
-    }
+    await initCamera(widget.availableCameras[_selectedCameraIndex]);
   }
 
   @override
@@ -93,12 +75,6 @@ class _CameraScreenState extends State<CameraScreen> {
     super.initState();
 
     _cameraToggle();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -120,7 +96,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   //     ),
                   //   ),
                   // ),
-                  CameraPreview(_controller),
+                  CameraPreview(_cameraController),
                   Positioned(
                     left: 30,
                     top: 30,
@@ -137,7 +113,15 @@ class _CameraScreenState extends State<CameraScreen> {
                         color: Colors.transparent,
                         child: InkWell(
                           customBorder: const CircleBorder(),
-                          onTap: () => print('retour'),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GuestScreen(
+                                    availableCameras: widget.availableCameras),
+                              ),
+                            );
+                          },
                           child: const Icon(
                             Icons.arrow_back,
                           ),
@@ -191,10 +175,10 @@ class _CameraScreenState extends State<CameraScreen> {
           child: FittedBox(
             child: InkWell(
               child: FloatingActionButton(
-                onPressed: () async {
-                  _isRecorded = !_isRecorded;
+                onPressed: () {
+                  _stopingInProgress = !_stopingInProgress;
                   setState(() {
-                    if (!_isRecorded) {
+                    if (_stopingInProgress) {
                       videoIcon = const Icon(
                         Icons.videocam,
                         color: Colors.black,
@@ -206,21 +190,10 @@ class _CameraScreenState extends State<CameraScreen> {
                       );
                     }
                   });
-                  try {
-                    await _initializeControllerFuture;
-
-                    var path = await _controller.takePicture();
-                    print(path.path);
-
-                    await Navigator.push(context,
-                      MaterialPageRoute(
-                        builder: (context) => HomeScreen(imagePath: path.path),
-                      ),
-                    );
-                  } catch(e) {
-                    print(e);
-                  }
                   // _takeVideo(_isRecorded);
+                  if (!_isRecording) {
+                    recordVideo();
+                  }
                 },
                 backgroundColor: Colors.transparent,
                 elevation: 0.0,
@@ -232,5 +205,49 @@ class _CameraScreenState extends State<CameraScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
+  }
+
+  Future<void> recordVideo() async {
+    if (!_stopingInProgress) {
+      // _availableCameras ??= await availableCameras();
+      _cameraController = CameraController(
+        widget.availableCameras[_selectedCameraIndex],
+        ResolutionPreset.max,
+      );
+      await _cameraController.initialize();
+      await _cameraController.startVideoRecording();
+      setState(() {
+        _isRecording = true;
+      });
+
+      await Future.delayed(const Duration(seconds: 2), () {});
+    }
+
+    if (_isRecording) {
+      XFile xfile = await _cameraController.stopVideoRecording();
+
+      File file = File(xfile.path);
+
+      String pathVideo = 'cameravideo_${widget.userModel.uid}.avi';
+
+      AwsS3PluginFlutter awsS3 = AwsS3PluginFlutter(
+        file: file,
+        fileNameWithExt: pathVideo,
+        awsFolderPath: '',
+        bucketName: 'safety-drive-bucket',
+        AWSAccess: '',
+        AWSSecret: '',
+        region: Regions.US_EAST_1,
+      );
+
+      var result = await awsS3.uploadFile;
+      debugPrint("Result :'$result'.");
+
+      setState(() {
+        _isRecording = false;
+      });
+
+      recordVideo();
+    }
   }
 }

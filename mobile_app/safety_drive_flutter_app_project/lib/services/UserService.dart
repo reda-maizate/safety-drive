@@ -46,7 +46,7 @@ class UserService {
   }
 
   Future<UserModel?> signIn(String email, String password) async {
-    UserModel? userModel = null;
+    UserModel? userModel;
     await _db.getConnection().then((conn) async {
       await conn.query('SELECT * FROM USERS WHERE email = ? AND password = ?', [
         email,
@@ -56,7 +56,7 @@ class UserService {
           for (var res in result) {
             conn.close();
             userModel = UserModel(
-              uid: res['user_id'].toString(),
+              uid: res['id_user'].toString(),
               email: email,
               password: password,
               pseudo: res['pseudo'].toString(),
