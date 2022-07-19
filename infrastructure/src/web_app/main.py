@@ -10,7 +10,7 @@ import logging
 endpoint = os.environ.get("ENDPOINT").split(":")[0]
 username = os.environ.get("MASTER_USERNAME")
 password = os.environ.get("MASTER_PASSWORD")
-db_name = "db_safety_drive"
+db_name = "safety_drive_db"
 
 LOGGER = logging.getLogger(__name__)
 
