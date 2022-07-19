@@ -1,5 +1,6 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:safety_drive_flutter_app_project/screens/Home.dart';
+import 'package:safety_drive_flutter_app_project/screens/Camera.dart';
 import 'package:safety_drive_flutter_app_project/screens/guest/Auth.dart';
 import 'package:safety_drive_flutter_app_project/screens/guest/SignIn.dart';
 import 'package:safety_drive_flutter_app_project/screens/guest/SignUp.dart';
@@ -7,7 +8,10 @@ import 'package:safety_drive_flutter_app_project/screens/guest/Term.dart';
 import 'package:safety_drive_flutter_app_project/services/UserService.dart';
 
 class GuestScreen extends StatefulWidget {
-  const GuestScreen({Key? key}) : super(key: key);
+  final List<CameraDescription> availableCameras;
+
+  const GuestScreen({Key? key, required this.availableCameras})
+      : super(key: key);
 
   @override
   State<GuestScreen> createState() => _GuestScreenState();
@@ -30,14 +34,15 @@ class _GuestScreenState extends State<GuestScreen> {
       AuthScreen(
         onChangedStep: (index, email) async {
           await _userService.emailExisted(email).then((value) {
-          setState(() {
-            if (value) {
-              _indexSelected = index + 2;
-            } else {
-              _indexSelected = index;
-            }
-            _email = email;
-          });});
+            setState(() {
+              if (value) {
+                _indexSelected = index + 2;
+              } else {
+                _indexSelected = index;
+              }
+              _email = email;
+            });
+          });
         },
       ),
       TermScreen(
@@ -60,12 +65,13 @@ class _GuestScreenState extends State<GuestScreen> {
             )
                 .then((value) {
               if (value != null) {
-                // Navigator.push(
-                  // context,
-                  // MaterialPageRoute(
-                    // builder: (context) => HomeScreen(),
-                  // ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        CameraScreen(userModel: value, availableCameras: widget.availableCameras),
+                  ),
+                );
               }
             });
           }
@@ -86,12 +92,13 @@ class _GuestScreenState extends State<GuestScreen> {
             )
                 .then((value) {
               if (value != null) {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => HomeScreen(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        CameraScreen(userModel: value, availableCameras: widget.availableCameras),
+                  ),
+                );
               }
             });
           }
