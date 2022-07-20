@@ -24,6 +24,7 @@ resource "aws_lambda_function" "lambda_web_app" {
       ENDPOINT = var.db_endpoint
       MASTER_USERNAME = var.db_username
       MASTER_PASSWORD = var.db_password
+      SECRET_LOGIN = "secretsecret"
     }
   }
 }

@@ -28,7 +28,7 @@ def capture_webcam_video(temp_file_name: str) -> None:
     result = cv2.VideoWriter(f"{temp_file_name}.avi", codec, 40, size)
 
     save_video(video, result, NUM_FRAMES_WANTED)
-    send_to_s3(temp_file_name, "cameravideo_3")
+    send_to_s3(temp_file_name, "cameravideo_1")
 
 
 def send_to_s3(temp_file_name: str, key_name: str) -> None:
@@ -65,15 +65,6 @@ def save_video(
         video_writer.write(frame)
         if idx % 10 == 0:
             print(f"info : {idx} number of frames saved")
-
-    # Option n°2 : Save all frames in a directory and send it to S3
-    # os.makedirs("camera_video", exist_ok=True)
-
-    # for idx in range(num_of_frames_wanted):
-    #     ret, frame = video.read()
-    #     cv2.imwrite(f"camera_video/{idx}.jpg", frame)
-    #     if idx % 10 == 0:
-    #         print(f"{idx} number of frames saved")
 
     video.release()
     video_writer.release()

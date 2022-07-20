@@ -14,7 +14,7 @@ import pymysql
 rds_endpoint = os.environ["RDS_ENDPOINT"]
 rds_username = os.environ["RDS_USERNAME"]
 rds_password = os.environ["RDS_PASSWORD"]
-rds_db_name = "safety_drive_db"
+rds_db_name = "db_safety_drive"
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
@@ -105,7 +105,7 @@ def turn_video_into_frames() -> np.ndarray:
     return frames
 
 
-def predict(frames: np.ndarray) -> List[str]:
+def predict(frames: np.ndarray) -> List[int]:
     """
     Predict the frames with our model.
     :param frames:
@@ -113,12 +113,12 @@ def predict(frames: np.ndarray) -> List[str]:
     """
     model = keras.models.load_model("base_model_ep_47_val_acc_0.99.h5")
     scores = model.predict(frames)
-    predictions_labels = [conf.LABELS[np.argmax(score)] for score in scores]
+    predictions_labels = [int(np.argmax(score)) for score in scores]
     LOGGER.info(f"predictions_labels: {predictions_labels}")
     return predictions_labels
 
 
-def post_process(user_id: str, predictions_labels: List[str]):
+def post_process(user_id: str, predictions_labels: List[int]):
     try:
         conn = pymysql.connect(
             host=rds_endpoint,
