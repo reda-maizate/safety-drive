@@ -11,7 +11,6 @@ from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from mangum import Mangum
-from starlette.responses import FileResponse
 
 LOGGER = logging.getLogger(__name__)
 
@@ -106,9 +105,9 @@ def login_with_creds(request: Request):
         return HTMLResponse(content=f.read())
 
 
-if __name__ == "__main__":
-    import uvicorn
+# if __name__ == "__main__":
+#     import uvicorn
+#
+#     uvicorn.run(app, host="0.0.0.0", port=8000, debug=True)
 
-    uvicorn.run(app, host="0.0.0.0", port=8000, debug=True)
-
-# handler = Mangum(app)
+handler = Mangum(app)
