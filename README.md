@@ -10,13 +10,22 @@ You should copy the content of the file `terraform.tfvars.example` to this file 
 ```
 # This file is used to configure the Terraform project.
 
-aws_account_id         = "" # Your AWS account ID (e.g., 123456789012)
-region                 = "" # Your AWS region (e.g., us-east-1)
-function_name          = "" # The name of the Lambda function (e.g., my-function)
-lambda_role_name       = "" # The name of the Lambda IAM role (e.g., lambda-my-role)
-lambda_iam_policy_name = "" # The name of the Lambda IAM policy (e.g., lambda-my-policy)
-bucket_name            = "" # The name of the S3 bucket (e.g., my-bucket)
-ecr_repository_name    = "" # The name of the ECR repository (e.g., my-repository)
+# General
+aws_account_id                  = "" # Your AWS account ID (e.g., 123456789012)
+region                          = "" # Your AWS region (e.g., us-east-1)
+bucket_name                     = ""
+profile_name                    = ""
+ecr_repository_name             = ""
+lambda_role_name                = ""
+os                              = ""
+
+# Pipeline
+function_name_pipeline          = ""
+lambda_iam_policy_name_pipeline = ""
+
+# Web App
+function_name_web_app           = ""
+api_gateway_name                = ""
 ```
 
 Final step : After your `terraform.tfvars` created and filled, launch the Docker application.
@@ -47,3 +56,9 @@ To destroy the infrastructure on AWS, you will need to run the following command
 ```bash
 make down
 ```
+
+## Installing the mobile application (Android)
+
+To install the Safety Drive mobile application, go to `\safety_drive_flutter_app_project\build\app\outputs\flutter-apk` and copy the `app-release.apk` file to your smartphone.
+
+Then, run the .apk file
