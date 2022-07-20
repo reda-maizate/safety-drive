@@ -5,7 +5,7 @@ class Mysql {
   static String host = 'aurora-instance-safety-drive.cjp8zgshnmam.us-east-1.rds.amazonaws.com',
       user = 'safetyDriveAdmin',
       password = 'safety-drive',
-      db = 'safety_drive_db';
+      db = 'db_safety_drive';
   static int port = 3306; 
 
   Future<MySqlConnection> getConnection() async {

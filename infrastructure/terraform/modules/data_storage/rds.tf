@@ -11,7 +11,7 @@ resource "aws_rds_cluster" "rds-cluster" {
   engine             = "aurora-mysql"
   engine_mode        = "provisioned"
   engine_version     = "8.0.mysql_aurora.3.02.0"
-  database_name      = "safety_drive_db"
+  database_name      = "db_safety_drive"
   master_username    = "safetyDriveAdmin"
   master_password    = "safety-drive"
   skip_final_snapshot = true
