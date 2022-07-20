@@ -17,11 +17,8 @@ def run():
         )
         cursor = db.cursor()
 
-        # sql = """create database safety_drive_db"""
-        # cursor.execute(sql)
-
         cursor.connection.commit()
-        sql = """use safety_drive_db"""
+        sql = """use db_safety_drive"""
         cursor.execute(sql)
 
         sql = """CREATE TABLE USERS (id_user varchar(512)  primary key, email varchar(128) not null, password varchar(512) not null, pseudo varchar(128) not null)"""
