@@ -59,6 +59,6 @@ make down
 
 ## Installing the mobile application (Android)
 
-To install the Safety Drive mobile application, go to `\safety_drive_flutter_app_project\build\app\outputs\flutter-apk` and copy the `app-release.apk` file to your smartphone.
+To install the Safety Drive mobile application, go to `safety-drive/mobile_app/` and copy the `app_safety_drive.apk` file to your smartphone.
 
 Then, run the .apk file
