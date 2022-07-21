@@ -15,3 +15,9 @@ variable "region" {
   type        = string
   default     = ""
 }
+
+variable "profile_name" {
+  description = "The AWS profile name"
+  type        = string
+  default     = ""
+}

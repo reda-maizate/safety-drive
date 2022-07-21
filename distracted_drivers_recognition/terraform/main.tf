@@ -13,8 +13,7 @@ terraform {
 provider "iterative" {}
 
 provider "aws" {
-  profile    = "redaprofile"
-  shared_credentials_file = "~/.aws/credentials"
+  profile     = var.profile_name
   max_retries = 1
 }
 
