@@ -98,7 +98,7 @@ Then, run the .apk file
 
 ## Infrastructure
 
-<iframe title="PA-4IABD1" width="1280" height="720" src="https://app.terrastruct.com/diagrams/1985152524"></iframe>
+<img title="PA-4IABD1" width="1280" height="720" src="https://app.terrastruct.com/diagrams/1985152524" />
 ------------------------------
 
 *Safety Drive is a school project, please do not use it for commercial purposes.*
