@@ -73,7 +73,7 @@ templates = Jinja2Templates(directory=os.path.join(pth, "templates"))
 
 
 @app.get("/{user_name}")
-def get_private_endpoint(request: Request, user_name: str):
+def get_private_endpoint(request: Request, user_name: int):
     with conn.cursor() as session:
         session.execute(f"SELECT * FROM PREDICTIONS WHERE user = {user_name}")
         result = session.fetchall()
@@ -84,19 +84,29 @@ def get_private_endpoint(request: Request, user_name: str):
     df = pd.DataFrame(
         result, columns=["prediction_id", "prediction", "datetime", "user_id"]
     )
-    # Create a simple plot with the column prediction and datetime of the dataframe df
-    df.plot(x="datetime", y="prediction", figsize=(20, 10))
-    # Save the plot to a file
-    plt.savefig("static/plot.png")
+    if not df.empty:
+        # Create a simple plot with the column prediction and datetime of the dataframe df
+        df.plot(x="datetime", y="prediction", figsize=(20, 10))
+        # Save the plot to a file
+        plt.savefig("static/plot.png")
 
-    return templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
-            "predictions": json.dumps(result, default=str),
-            "graph": "plot.png",
-        },
-    )
+        return templates.TemplateResponse(
+            "index.html",
+            {
+                "request": request,
+                "predictions": json.dumps(result, default=str),
+                "graph": "plot.png",
+            },
+        )
+    else:
+        return templates.TemplateResponse(
+            "index.html",
+            {
+                "request": request,
+                "predictions": json.dumps(result, default=str),
+                "graph": "",
+            },
+        )
 
 
 # @app.get("/", response_class=HTMLResponse)
