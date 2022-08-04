@@ -16,6 +16,18 @@ export default function FormLogin() {
             </p>
           </div>
           <div className="flex flex-col mb-4">
+            <label>First Name</label>
+            <input className="border relative bg-gray-100 p-2" type="text" />
+          </div>
+          <div className="flex flex-col mb-4">
+            <label>Lastname</label>
+            <input className="border relative bg-gray-100 p-2" type="text" />
+          </div>
+          <div className="flex flex-col mb-4">
+            <label>Email</label>
+            <input className="border relative bg-gray-100 p-2" type="email" />
+          </div>
+          <div className="flex flex-col mb-4">
             <label>Username</label>
             <input className="border relative bg-gray-100 p-2" type="text" />
           </div>
@@ -26,18 +38,16 @@ export default function FormLogin() {
               type="password"
             />
           </div>
+
           <button className="w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white">
-            Sign In
+            Sign Up
           </button>
           <p className="flex items-center mt-2">
             <input className="mr-2" type="checkbox" />
             Remember Me
           </p>
           <p className="text-center mt-8">
-            Not a member? {' '}
-            <Link href="/register" passHref>
-              Sign up now
-            </Link>
+            Already have an account ?{' '} <Link href="/" passHref>Log in</Link>
           </p>
         </form>
       </div>
